@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/sebastian-codeBase/',
   plugins: [react()],
 	server: {
 		host: '0.0.0.0', // ⬅ 讓外部可訪問（例如你的主機 localhost）
