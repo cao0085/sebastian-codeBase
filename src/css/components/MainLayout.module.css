@@ -1,0 +1,90 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: row;
+  transition: all 0.3s ease;
+}
+
+.toggle {
+  position: fixed;
+  top: 10px;
+  left: 15px;
+  z-index: 1000;
+  background-color: transparent;
+  color: #a2a9b0;
+  border: none;
+  font-size: 24px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.drawer {
+  position: fixed; 
+  height: 100%;
+  background-color: #282a2c;
+  color: #a2a9b0;
+  padding: 60px 0px 20px 0px;
+  width: 240px;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.drawer.closed {
+  width: 72px;
+}
+
+
+.logoText {
+  font-size: 26px;
+  font-weight: bold;
+  padding-left: 18px;
+  transform: translateX(-5px);
+}
+
+.slideShow {
+  opacity: 1;
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.slideHide {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: none;
+  position: absolute;
+  transform: translateX(-5px);
+}
+
+.mainContent {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  padding: 10px;
+  transition: margin 0.3s ease;
+  margin: 0 auto;
+}
+
+.placeHolder {
+  width: 240px;
+  transition: width 0.3s ease;
+}
+
+.placeHolderClosed {
+  width: 72px
+}
+
+@media (max-width: 960px) {
+
+  .placeHolderClosed {
+    width: 0px
+  }  
+  .drawer.closed {
+    transition: width 0.3s ease;
+    background-color: transparent;
+    height: 0;
+  }
+}
