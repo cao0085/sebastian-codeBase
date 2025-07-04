@@ -15,8 +15,8 @@ function App() {
 
   return (
     <div className={`app-root theme-${theme}`}>
-      {t('language')}
       {element}
+      {t('language')}
     </div>
   )
 }

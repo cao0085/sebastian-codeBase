@@ -5,7 +5,7 @@
   transition: all 0.3s ease;
 }
 
-.toggle {
+/* .drawerButton {
   position: fixed;
   top: 10px;
   left: 15px;
@@ -17,9 +17,37 @@
   padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
+} */
+
+.headerWrapper {
+  position: relative; /* 讓內部元素可以做相對定位 */
+  margin-top: 10px;
+  padding-left: 15px; /* 和 drawerButton 對齊 */
 }
 
-.drawer {
+.drawerButton {
+  position: fixed;
+  top: 10px;
+  left: 15px;
+  z-index: 1000;
+  background-color: transparent;
+  color: #a2a9b0;
+  border: none;
+  font-size: 50px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.titleName {
+  margin-top: 70px; /* 或 padding-top 設定與 button 保持距離 */
+  font-size: 60px;
+  transform: rotate(180deg); /* 讓文字上下顛倒，達成反向效果 */
+  writing-mode: vertical-rl; 
+  color: #333;
+}
+
+.drawerWapperOpen {
   position: fixed; 
   height: 100%;
   background-color: #282a2c;
@@ -29,20 +57,14 @@
   overflow: hidden;
   transition: width 0.3s ease;
 }
-
-.drawer.closed {
-  width: 72px;
+.drawerWapperClosed {
+  width: 0px;
 }
 
-
-.logoText {
-  font-size: 26px;
-  font-weight: bold;
-  padding-left: 18px;
-  transform: translateX(-5px);
-}
-
-.slideShow {
+.drawerContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   opacity: 1;
   transform: translateX(0);
   visibility: visible;
@@ -50,14 +72,29 @@
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.slideHide {
+.drawerHide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
   transition: none;
-  position: absolute;
   transform: translateX(-5px);
 }
+
+.drawerButtom {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  width: 100%;
+  padding: 16px;
+  font-size: 14px;
+  border-top: 1px solid #444;
+  cursor: pointer;
+}
+
+
 
 .mainContent {
   display: flex;
