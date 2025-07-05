@@ -13,7 +13,7 @@ i18n
       escapeValue: false   // React 已自動處理 XSS
     },
     backend: {
-      loadPath: '/language/{{lng}}/translation.json', // ← 語言檔載入路徑
+      loadPath: `${import.meta.env.BASE_URL}language/{{lng}}/translation.json`
     },
   });
 

@@ -13,7 +13,6 @@ import SunIcon from '@/assets/svgIcon/Sun'
 
 export default function MainLayout() {
   const [open, setOpen] = useState(true);
-  const [open2, setOpen2] = useState(false);
   const [openBottom, setOpenBottom] = useState(false);
   const dispatch = useDispatch();
 

@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux'
 import { useRoutes } from 'react-router-dom'
 import type { RootState } from '@/store/store'
 import { routes } from './routes'
-import { useTranslation } from 'react-i18next';
 
 
 
