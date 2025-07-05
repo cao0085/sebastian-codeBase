@@ -5,7 +5,7 @@
 /* ---------- Banner 外殼 ---------- */
 .hero {
   position: relative;
-  /* height: 50%; */
+  height: 35%;
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;             /* 把溢出裁切 */

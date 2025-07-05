@@ -13,6 +13,8 @@ import SunIcon from '@/assets/svgIcon/Sun'
 
 export default function MainLayout() {
   const [open, setOpen] = useState(true);
+  const [open2, setOpen2] = useState(false);
+  const [openBottom, setOpenBottom] = useState(false);
   const dispatch = useDispatch();
 
   const currentLang = useSelector((state: RootState) => state.language.currentLanguage);
@@ -31,6 +33,11 @@ export default function MainLayout() {
         <button className={layoutStyles.drawerButton} onClick={() => setOpen(!open)}>
           ≡
         </button>
+        <button
+          className={layoutStyles.bottomHandle}
+          onClick={() => setOpen(!open)}
+          aria-label="toggle drawer"
+        />
         <div className={layoutStyles.titleName}>Sebastian-lin</div>
       </div>
       <aside className={`${layoutStyles.drawerWapperOpen} ${!open ? layoutStyles.drawerWapperClosed : ''}`}>
@@ -51,9 +58,48 @@ export default function MainLayout() {
 
       {/* 站位符號 */}
       <div className={`${layoutStyles.placeHolder} ${!open ? layoutStyles.placeHolderClosed : ''}`}></div>
+      {/* 內容 */}
       <main className={layoutStyles.mainContent}>
         <Outlet />
       </main>
+      {/* phone bottom */}
+      {/* <div className={layoutStyles.bottomBar}>
+        <div>
+          <NavPanel/>
+        </div>
+        <button onClick={() => {() => setOpen(!open2)}}>
+          ＾
+        </button>
+      </div> */}
+
+{/* ① Bottom-Sheet：展開時才可見 */}
+      <div
+        className={`${layoutStyles.bottomSheet} ${
+          openBottom ? layoutStyles.bottomSheetOpen : layoutStyles.bottomSheetClosed
+        }`}
+      >
+        <NavPanel />
+
+        <div className={layoutStyles.bottomActions}>
+          <button title="123" onClick={toggleLanguage} className={layoutStyles.nonStyleButton}>
+            <EarthIcon />
+          </button>
+          <button onClick={toggleTheme} className={layoutStyles.nonStyleButton}>
+            {curentTheme === 'dark' ? <SunIcon /> : <MoonIcon />}
+          </button>
+        </div>
+      </div>
+
+      {/* ② 永遠貼底的 Toggle 按鈕 */}
+      <div className={layoutStyles.bottomToggleRow}>
+        <button
+          className={layoutStyles.bottomToggleBtn}
+          onClick={() => setOpenBottom(!openBottom)}
+          aria-label="toggle bottom sheet"
+        >
+          {openBottom ? '⌄' : '⌃'}
+        </button>
+      </div>
     </div>
   );
 }
