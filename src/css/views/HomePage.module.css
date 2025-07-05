@@ -1,9 +1,14 @@
+.main {
+    /* background-color: aqua; */
+}
+
 /* ---------- Banner 外殼 ---------- */
 .hero {
   position: relative;
+  /* height: 50%; */
   width: 100%;
   aspect-ratio: 16 / 9;
-  overflow: hidden;
+  overflow: hidden;             /* 把溢出裁切 */
 }
 
 /* 圖片鋪滿並 cover 裁切 */

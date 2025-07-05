@@ -23,7 +23,7 @@ body {
 /* ---------- 響應式容器 ---------- */
 .container {
   width: 100%;
-  max-width: 100%;       /* 手機尺寸預設全寬 */
+  /* max-width: 100%; */
 }
 
 /* break-point */

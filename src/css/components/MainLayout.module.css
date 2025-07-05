@@ -91,9 +91,9 @@
 
 .mainContent {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  /* justify-content: center; */
   flex: 1;
-  /* background-color: aquamarine; */
   transition: margin 0.3s ease;
   /* margin: 0 auto; */
 }
