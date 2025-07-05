@@ -5,24 +5,10 @@
   transition: all 0.3s ease;
 }
 
-/* .drawerButton {
-  position: fixed;
-  top: 10px;
-  left: 15px;
-  z-index: 1000;
-  background-color: transparent;
-  color: #a2a9b0;
-  border: none;
-  font-size: 24px;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-} */
-
 .headerWrapper {
+  width: 0;
   position: relative; /* 讓內部元素可以做相對定位 */
   margin-top: 10px;
-  padding-left: 15px; /* 和 drawerButton 對齊 */
 }
 
 .drawerButton {
@@ -66,6 +52,7 @@
   flex-direction: column;
   height: 100%;
   opacity: 1;
+  font-size: 1rem;
   transform: translateX(0);
   visibility: visible;
   pointer-events: auto;
@@ -83,7 +70,7 @@
   transform: translateX(-5px);
 }
 
-.drawerButtom {
+.drawerBottom {
   position: absolute;
   bottom: 60px;
   left: 0;
@@ -94,15 +81,21 @@
   cursor: pointer;
 }
 
-
+.nonStyleButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  line-height: 0;
+}
 
 .mainContent {
   display: flex;
   justify-content: center;
   flex: 1;
-  padding: 10px;
+  /* background-color: aquamarine; */
   transition: margin 0.3s ease;
-  margin: 0 auto;
+  /* margin: 0 auto; */
 }
 
 .placeHolder {
@@ -111,14 +104,10 @@
 }
 
 .placeHolderClosed {
-  width: 72px
+  width: 0px
 }
 
 @media (max-width: 960px) {
-
-  .placeHolderClosed {
-    width: 0px
-  }  
   .drawer.closed {
     transition: width 0.3s ease;
     background-color: transparent;

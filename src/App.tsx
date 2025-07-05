@@ -1,9 +1,9 @@
 // src/App.tsx
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useRoutes } from 'react-router-dom'
 import type { RootState } from '@/store/store'
 import { routes } from './routes'
-import appStyle from '@/css/App.module.css';
 import { useTranslation } from 'react-i18next';
 
 
@@ -11,12 +11,14 @@ import { useTranslation } from 'react-i18next';
 function App() {
   const element = useRoutes(routes)
   const theme = useSelector((state: RootState) => state.views.theme);
-  const { t } = useTranslation();
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   return (
-    <div className={`app-root theme-${theme}`}>
+    <div className="container">
       {element}
-      {t('language')}
     </div>
   )
 }

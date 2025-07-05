@@ -1,0 +1,51 @@
+/* ---------- 基本調色盤 ---------- */
+:root {
+  /* 基礎 */
+  --bg:           #ffffff;
+  --surface:      #f5f7f8;
+  --border:       #d1d5db;
+
+  /* 文字 */
+  --text:         #141517;
+  --text-secondary:#4b5563;
+
+  /* 品牌 / 次要 */
+  --primary:      #5d03a5;
+  --on-primary:   #ffffff;      /* Primary 上的文字 */
+  --accent:       #56d722;
+  --on-accent:    #ffffff;
+
+  /* 狀態色 */
+  --success:      #10b981;
+  --warning:      #f59e0b;
+  --error:        #ef4444;
+  --info:         #0ea5e9;
+
+  --drawer-bg: #282a2c; 
+
+  /* 互動狀態 (疊色用) */
+  --hover:        color-mix(in srgb, var(--text) 8%, transparent);
+  --active:       color-mix(in srgb, var(--text) 16%, transparent);
+
+  color-scheme: light dark;     /* 告訴瀏覽器有做雙主題 */
+}
+
+/* ---------- Dark 主題覆寫 ---------- */
+[data-theme='dark'] {
+  --bg:           #141517;
+  --surface:      #1f2123;
+  --border:       #2c2e30;
+
+  --text:         #e5e7eb;
+  --text-secondary:#9ca3af;
+
+  --primary:      #a775ff;      /* 加亮避免低對比 */
+  --on-primary:   #1f2123;
+  --accent:       #62ff49;
+  --on-accent:    #1f2123;
+
+  --drawer-bg: #416487;
+
+  --hover:        color-mix(in srgb, var(--text) 12%, transparent);
+  --active:       color-mix(in srgb, var(--text) 24%, transparent);
+}

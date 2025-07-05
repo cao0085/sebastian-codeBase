@@ -1,16 +1,18 @@
-
-
+import styles from '@/css/views/HomePage.module.css';
 
 export default function HomePage() {
-    return <h1 style={heigh}>Home</h1>;
-  }
+  return (
+    <>
+      <section className={styles.hero}>
+        {/* 實際圖片當背景，便於 cover 裁切；img 只留 SEO/懶載可省略 */}
+        <img src="/room.jpg" alt="Microphone" className={styles.heroImg} />
+        {/* 文字層，可放 H1、按鈕、任意內容 */}
+        <div className={styles.heroText}>
+          <h1>Record Your Voice</h1>
+          <p>Capture every nuance in studio-quality sound.</p>
+        </div>
+      </section>
+    </>
 
-
-const heigh = {
-  backgroundColor: 'white',
-  height: "1500px", // ← 改這裡，加上 px 單位
-  color: 'black',
-  fontSize: '48px',
-  textAlign: 'center',
-  padding: '50px',
-};
+  );
+}
