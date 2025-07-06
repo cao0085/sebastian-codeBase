@@ -1,4 +1,6 @@
 import styles from '@/css/views/HomePage.module.css';
+import DraggableWindow from '@/components/DraggableWindow';
+import ExpandablePanel from '@/components/ExpandablePanel'
 
 export default function HomePage() {
   return (
@@ -11,19 +13,23 @@ export default function HomePage() {
           <p>Capture every nuance in studio-quality sound.</p>
         </div>
       </section>
+      {/* <section>
+          <SegmentedPlayer
+          src={`${import.meta.env.BASE_URL}mp3/Ab.m3u8`}
+        />
+      </section> */}
       <section>
-        <h1>section2</h1>
+        {/* <SegmentedPlayer2></SegmentedPlayer2> */}
+        
+      </section>
+      <section>
+        <DraggableWindow></DraggableWindow>
       </section>
       <section>
         <h1>section3</h1>
       </section>
       <section>
-        <h1>section3</h1>
-      </section>
-      <section>
-        <h1>section3</h1>
-      </section>
-      <section>
+        
         <h1>section3</h1>
       </section>
       <section>

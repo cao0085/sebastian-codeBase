@@ -6,6 +6,7 @@ import { setLanguage } from '@/store/slices/languageSlice';
 import { setTheme } from '@/store/slices/viewsSlice';
 import NavPanel from '@/components/NavPanel';
 import layoutStyles from '@/css/components/MainLayout.module.css';
+import SegmentedPlayer2 from '@/components/SegmentedPlayer2';
 
 import EarthIcon from '@/assets/svgIcon/Earth'
 import MoonIcon from '@/assets/svgIcon/Moon'
@@ -45,6 +46,7 @@ export default function MainLayout() {
         > 
           <NavPanel/>
           <div className={layoutStyles.drawerBottom}>
+            {/* <SegmentedPlayer2></SegmentedPlayer2> */}
             <button onClick={toggleLanguage} className={layoutStyles.nonStyleButton} title="切換語言">
               <EarthIcon/>
             </button>
@@ -71,7 +73,7 @@ export default function MainLayout() {
         </button>
       </div> */}
 
-{/* ① Bottom-Sheet：展開時才可見 */}
+      {/* ① Bottom-Sheet：展開時才可見 */}
       <div
         className={`${layoutStyles.bottomSheet} ${
           openBottom ? layoutStyles.bottomSheetOpen : layoutStyles.bottomSheetClosed
@@ -88,7 +90,7 @@ export default function MainLayout() {
           </button>
         </div>
       </div>
-
+      
       {/* ② 永遠貼底的 Toggle 按鈕 */}
       <div className={layoutStyles.bottomToggleRow}>
         <button

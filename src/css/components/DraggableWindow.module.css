@@ -1,0 +1,91 @@
+/* src/css/components/DraggableWindow.module.css */
+
+.window {
+  position: fixed; /* ⬅ 原本是 absolute，改成 fixed */
+  width: 280px;
+  max-height: 90vh;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 999;
+}
+
+.transition {
+  transition: top 0.4s ease;
+}
+
+.header {
+  cursor: move;
+  background-color: var(--primary);
+  padding: 1rem;
+  color: var(--on-primary);
+  border-bottom: 1px solid var(--border);
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
+
+
+.body {
+  flex: 0 0 auto;          /* 不被撐開 */
+  max-height: 300px;       /* 對應內容的上限 */
+  overflow-y: auto;
+  background: var(--surface);
+
+  transform-origin: bottom;
+  transition: transform 0.35s ease, opacity 0.3s ease;
+}
+
+/* --- 展開收合動畫區塊 --- */
+.expanded {
+  max-height: 300px;
+  opacity: 1;
+  transition: max-height 0.6s ease, opacity 0.3s ease;
+}
+
+.collapsed {
+  max-height: 0;
+  padding: 0px;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  pointer-events: none;
+}
+ /* 展開 / 收合狀態 */
+/* .expanded {
+  transform: scaleY(1);
+  opacity: 1;
+}
+
+.collapsed {
+  transform: scaleY(0);
+  opacity: 0;
+  pointer-events: none;
+} */
+
+.footer {
+  display: flex;
+  justify-content: center;
+  background-color: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.toggleBtn {
+  all: unset;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: var(--primary);
+  color: var(--on-primary);
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+.toggleBtn:hover {
+  background-color: color-mix(in srgb, var(--primary) 20%, white);
+}
+
+

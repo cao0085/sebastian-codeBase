@@ -1,0 +1,50 @@
+/* src/css/components/PlayList.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* padding: 2%; */
+  /* width: 100%; */
+  /* height: 100%; */
+}
+
+.track {
+  cursor: pointer;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  padding: 3%;
+  background-color: var(--surface);
+  transition: background-color 0.2s ease;
+}
+
+.track:hover {
+  background-color: var(--hover);
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.artist {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  /* margin-top: 2%; */
+}
+
+.tagList {
+  margin-top: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2%;
+}
+
+.tag {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.25rem;
+  border-radius: 0.25rem;
+  background-color: color-mix(in srgb, var(--primary) 20%, white);
+  color: var(--primary);
+}
