@@ -2,13 +2,17 @@
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { tracks } from '@/assets/mp3/tracks';
-import { setCurrentTrack } from '@/store/slices/playerSlice';
+import { setCurrentTrack,setPlaying } from '@/store/slices/playerSlice';
 import type { TrackInfo } from '@/types/TrackInfo';
 
 import style from '@/css/components/PlayList.module.css';
 
 export default function PlayList() {
   const dispatch = useDispatch();
+  const handleSelect = (track: TrackInfo) => {
+    dispatch(setCurrentTrack(track));
+    dispatch(setPlaying(true));
+  };
 
   useEffect(() => {
     /* fetch tracks… */
@@ -17,7 +21,7 @@ export default function PlayList() {
   return (
     <div className={style.container}>
       {tracks.map((t) => (
-        <Track key={t.path} track={t} onSelect={() => dispatch(setCurrentTrack(t))} />
+        <Track key={t.path} track={t} onSelect={() => handleSelect(t)} />
       ))}
     </div>
   );

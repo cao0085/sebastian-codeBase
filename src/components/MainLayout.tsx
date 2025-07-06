@@ -6,7 +6,7 @@ import { setLanguage } from '@/store/slices/languageSlice';
 import { setTheme } from '@/store/slices/viewsSlice';
 import NavPanel from '@/components/NavPanel';
 import layoutStyles from '@/css/components/MainLayout.module.css';
-import SegmentedPlayer2 from '@/components/SegmentedPlayer2';
+
 
 import EarthIcon from '@/assets/svgIcon/Earth'
 import MoonIcon from '@/assets/svgIcon/Moon'

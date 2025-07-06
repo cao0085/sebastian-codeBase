@@ -1,7 +1,7 @@
 // src/components/DraggableWindow.tsx
-import { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import PlayList from '@/components/PlayList';
-import SegmentedPlayer from '@/components/SegmentedPlayer2';
+import SegmentedPlayer from '@/components/SegmentedPlayer';
 import styles from '@/css/components/DraggableWindow.module.css';
 
 export default function DraggableWindow() {

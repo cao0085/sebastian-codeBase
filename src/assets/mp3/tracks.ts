@@ -67,7 +67,7 @@ export const tracks: TrackInfo[] = [
   {
     name: 'Double Jointed Canyon',
     artist: 'Esperanza Spalding',
-    path: 'Double-Jointed-Canyon/Double-Jointed-Canyon.m3u8',
+    path: 'mp3/Double-Jointed-Canyon/Double-Jointed-Canyon.m3u8',
     tags: [],
     time: 0,
   },
