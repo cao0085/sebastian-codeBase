@@ -31,20 +31,43 @@ export default function BeforeAfterPlayer() {
       <ul>
         {trackList.map((track: BeforeAfterTrackInfo, index: number) => (
           <li key={index}>
-            <button onClick={() => setCurrentTrack(track)}>
+            <button onClick={() => {
+              setIsReady(false); // 切換曲目時先重置 loading
+              setCurrentTrack(track);
+            }}>
               {track.name}
             </button>
           </li>
         ))}
       </ul>
+      
+      <div style={{ position: 'relative' }}>
+        {!isReady && (
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(255,255,255,0.7)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 10,
+            }}
+          >
+            <span>載入中...</span>
+          </div>
+        )}
 
-      {/* 若有選中曲目才顯示播放器 */}
-      {currentTrack &&
-        <AudioController 
-            key={currentTrack.name}
-            {...currentTrack}
-            onReady={() => setIsReady(true)}
-        />}
+        <AudioController
+          key={currentTrack.name}
+          {...currentTrack}
+          onReady={() => setIsReady(true)}
+        />
+      </div>
+
     </div>
   );
 }
@@ -63,10 +86,13 @@ function AudioController(trackInfo: BeforeAfterTrackInfo & { onReady?: () => voi
   const toggleTrack = () => 
     setActiveTrack(t => (t === 'before' ? 'after' : 'before'));
 
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [volume, setVolume] = useState(0.6);
+
   // init
   useEffect(() => {
-    console.log("播放before路徑", trackInfo.before_path);
-    console.log("播放after路徑", trackInfo.after_path);
+
     const waitForAll = async () => {
         if (audioRef_before.current && trackInfo.before_path) {
             setupAudio(audioRef_before.current, trackInfo.before_path);
@@ -118,25 +144,125 @@ function AudioController(trackInfo: BeforeAfterTrackInfo & { onReady?: () => voi
     }
   };
 
-function waitForAudioReady(audio: HTMLAudioElement): Promise<void> {
-  return new Promise((resolve) => {
-    const handler = () => {
-      audio.removeEventListener('canplaythrough', handler);
-      resolve();
+  function waitForAudioReady(audio: HTMLAudioElement): Promise<void> {
+    return new Promise((resolve) => {
+      const handler = () => {
+        audio.removeEventListener('canplaythrough', handler);
+        resolve();
+      };
+      audio.addEventListener('canplaythrough', handler);
+    });
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (audioRef_before.current && isPlaying) {
+        setCurrentTime(audioRef_before.current.currentTime);
+      }
+    }, 200);
+    return () => clearInterval(interval);
+  }, [isPlaying]);
+
+
+  useEffect(() => {
+  const before = audioRef_before.current;
+  const after = audioRef_after.current;
+  if (!before || !after) return;
+
+  if (activeTrack === 'before') {
+    fadeVolume(before, before.volume, volume);
+    fadeVolume(after, after.volume, 0);
+    } else {
+      fadeVolume(before, before.volume, 0);
+      fadeVolume(after, after.volume, volume);
+    }
+  }, [activeTrack, volume]);
+
+  function fadeVolume(
+    audio: HTMLAudioElement,
+    from: number,
+    to: number,
+    duration: number = 500
+  ) {
+    const stepTime = 16; // 每一幀大約 16ms
+    const steps = duration / stepTime;
+    let step = 0;
+
+    const volumeDiff = to - from;
+
+    const fade = () => {
+      step++;
+      const newVolume = from + (volumeDiff * step) / steps;
+      audio.volume = Math.max(0, Math.min(1, newVolume));
+      if (step < steps) {
+        requestAnimationFrame(fade);
+      }
     };
-    audio.addEventListener('canplaythrough', handler);
-  });
-}
+
+    requestAnimationFrame(fade);
+  }
 
   return (
     <div>
-        <button onClick={toggleTrack}>我是切換</button>
+      <button onClick={toggleTrack}>切換：{activeTrack}</button>
+      <div>
+        
+
+        {/* 播放控制 */}
+        <button onClick={() => {
+          setIsPlaying(prev => {
+            const next = !prev;
+            if (next) {
+              audioRef_before.current?.play();
+              audioRef_after.current?.play();
+            } else {
+              audioRef_before.current?.pause();
+              audioRef_after.current?.pause();
+            }
+            return next;
+          });
+        }}>
+          {isPlaying ? '暫停' : '播放'}
+        </button>
+
+        {/* 進度條 */}
+        <input
+          type="range"
+          min={0}
+          max={audioRef_before.current?.duration || 0}
+          value={currentTime}
+          step={0.1}
+          onChange={(e) => {
+            const t = parseFloat(e.target.value);
+            setCurrentTime(t);
+            audioRef_before.current!.currentTime = t;
+            audioRef_after.current!.currentTime = t;
+          }}
+        />
+
         <div>
-            {activeTrack === 'before' ? '混音前' : '混音後'}
+          <label>音量</label>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.01}
+            value={volume}
+            onChange={(e) => {
+              const v = parseFloat(e.target.value);
+              setVolume(v);
+              if (activeTrack === 'before' && audioRef_before.current) {
+                audioRef_before.current.volume = v;
+              }
+              if (activeTrack === 'after' && audioRef_after.current) {
+                audioRef_after.current.volume = v;
+              }
+            }}
+          />
         </div>
-        <div>我是進度條</div>
-        <div>我是音量條</div>
-        <button>我是播放</button>
+      </div>
+        <audio ref={audioRef_before}  />
+        <audio ref={audioRef_after}  />
     </div>
   );
 }
