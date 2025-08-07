@@ -1,17 +1,8 @@
 // src/components/PlayList.tsx
-import { useDispatch } from 'react-redux';
 import Hls from 'hls.js';
 import { useState,useEffect,useRef } from 'react';
 import { beforeAftertracks } from '@/assets/mp3/beforeAfterTracks';
 import type { BeforeAfterTrackInfo } from '@/types/BeforeAfterTrackInfo';
-
-const emptyTrack: BeforeAfterTrackInfo = {
-  name: '',
-  before_path: '',
-  after_path: '',
-  tags: [],
-  time: 0,
-};
 
 // import style from '@/css/components/PlayList.module.css';
 
@@ -41,29 +32,15 @@ export default function BeforeAfterPlayer() {
         ))}
       </ul>
       
-      {/* <div style={{ position: 'relative' }}>
+      <div style={{ position: 'relative' }}>
         {!isReady && (
           <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(255,255,255,0.7)',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              zIndex: 10,
-            }}
           >
-            <span>載入中...</span>
+            <span>test...</span>
           </div>
         )}
-
-
-      </div> */}
-        <AudioController
+      </div>
+      <AudioController
           key={currentTrack.name}
           {...currentTrack}
           onReady={() => setIsReady(true)}
