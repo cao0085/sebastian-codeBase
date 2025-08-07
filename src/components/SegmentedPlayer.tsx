@@ -34,39 +34,39 @@ export default function SegmentedPlayer() {
   //     console.error('HLS is not supported in this browser');
   //   }
   // }, [src]);
-/* 載入 HLS 並在載入完成後自動播放 */
-useEffect(() => {
-  if (!src) return;
-  const url = `${import.meta.env.BASE_URL}${src}`;
-  const audio = audioRef.current!;
-  
-  // 重置舊 src
-  audio.pause();
-  audio.src = '';
-  audio.removeAttribute('src');
+  /* 載入 HLS 並在載入完成後自動播放 */
+  useEffect(() => {
+    if (!src) return;
+    const url = `${import.meta.env.BASE_URL}${src}`;
+    const audio = audioRef.current!;
+    
+    // 重置舊 src
+    audio.pause();
+    audio.src = '';
+    audio.removeAttribute('src');
 
-  // 如果瀏覽器原生支援 HLS
-  if (audio.canPlayType('application/vnd.apple.mpegurl')) {
-    audio.src = url;
-    audio.load();
-    audio.play().catch(console.error);
-    dispatch(setPlaying(true));
-
-  // 否則用 hls.js
-  } else if (Hls.isSupported()) {
-    const hls = new Hls({ enableWorker: true });
-    hls.loadSource(url);
-    hls.attachMedia(audio);
-    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+    // 如果瀏覽器原生支援 HLS
+    if (audio.canPlayType('application/vnd.apple.mpegurl')) {
+      audio.src = url;
+      audio.load();
       audio.play().catch(console.error);
       dispatch(setPlaying(true));
-    });
-    return () => hls.destroy();
 
-  } else {
-    console.error('HLS is not supported in this browser');
-  }
-}, [src, dispatch]);
+    // 否則用 hls.js
+    } else if (Hls.isSupported()) {
+      const hls = new Hls({ enableWorker: true });
+      hls.loadSource(url);
+      hls.attachMedia(audio);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        audio.play().catch(console.error);
+        dispatch(setPlaying(true));
+      });
+      return () => hls.destroy();
+
+    } else {
+      console.error('HLS is not supported in this browser');
+    }
+  }, [src, dispatch]);
   
 
 
