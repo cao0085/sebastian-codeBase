@@ -41,7 +41,7 @@ export default function BeforeAfterPlayer() {
         ))}
       </ul>
       
-      <div style={{ position: 'relative' }}>
+      {/* <div style={{ position: 'relative' }}>
         {!isReady && (
           <div
             style={{
@@ -61,12 +61,13 @@ export default function BeforeAfterPlayer() {
           </div>
         )}
 
+
+      </div> */}
         <AudioController
           key={currentTrack.name}
           {...currentTrack}
           onReady={() => setIsReady(true)}
         />
-      </div>
 
     </div>
   );
