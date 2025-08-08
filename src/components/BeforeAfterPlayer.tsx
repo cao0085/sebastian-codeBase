@@ -17,8 +17,8 @@ export default function BeforeAfterPlayer() {
   }, []);
 
   return (
-    <div>
-      <h2>曲目清單</h2>
+    <div className='before-after'>
+      <h2>Take a Listen</h2>
       <ul>
         {trackList.map((track: BeforeAfterTrackInfo, index: number) => (
           <li key={index}>
@@ -44,7 +44,7 @@ export default function BeforeAfterPlayer() {
           key={currentTrack.name}
           {...currentTrack}
           onReady={() => setIsReady(true)}
-        />
+      />
 
     </div>
   );
