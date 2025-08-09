@@ -18,9 +18,9 @@ export default function HomePage() {
           <p>Capture every nuance in studio-quality sound.</p>
         </div>
       </section>
-      {/* <section>
+      <section>
         <DraggableWindow/>
-      </section> */}
+      </section>
       <section className={styles.beforeAfterSection}>
         <BeforeAfterPlayer/>
       </section>
