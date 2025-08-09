@@ -1,9 +1,13 @@
 import styles from '@/css/views/HomePage.module.css';
 import DraggableWindow from '@/components/DraggableWindow';
 import BeforeAfterPlayer from '@/components/BeforeAfterPlayer';
-import ClientForm from '@/components/ClientForm';
+import ClientFormModal from '@/components/ClientFormModal';
+import { useState } from 'react';
 
 export default function HomePage() {
+
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className={styles.main}>
 
@@ -21,12 +25,9 @@ export default function HomePage() {
         <BeforeAfterPlayer/>
       </section>
       <section>
-        <ClientForm/>
+      <button onClick={() => setIsOpen(true)}>開啟表單</button>
+      <ClientFormModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
       </section>
-      <section>
-        <h1>section3</h1>
-      </section>
-
     </div>
 
   );

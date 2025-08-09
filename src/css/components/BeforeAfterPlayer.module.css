@@ -108,3 +108,45 @@
 .volume input[type="range"] {
   accent-color: #26211c; /* 最簡單，直接改主色（支援新瀏覽器） */
 }
+
+.volume input[type="range"] {
+  accent-color: #26211c; /* 最簡單，直接改主色（支援新瀏覽器） */
+}
+
+.panel {
+  position: relative; /* 讓 overlay 能定位在裡面 */
+}
+
+/* 遮罩 */
+.loadingOverlay {
+  position: absolute;
+  inset: 0;                /* top/right/bottom/left: 0 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: rgba(0, 0, 0, 0.45); /* 半透明 */
+  backdrop-filter: blur(2px);      /* 可有可無，加點霧面質感 */
+  z-index: 10;
+  color: #fff;
+  border-radius: 12px;             /* 如果 panel 有圓角就跟著設定 */
+}
+
+/* 簡單 spinner */
+.loadingSpinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.loadingText {
+  font-size: 0.95rem;
+  letter-spacing: .02em;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
