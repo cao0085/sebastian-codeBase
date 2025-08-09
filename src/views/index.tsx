@@ -24,9 +24,9 @@ export default function HomePage() {
       <section className={styles.beforeAfterSection}>
         <BeforeAfterPlayer/>
       </section>
-      <section>
-      <button onClick={() => setIsOpen(true)}>開啟表單</button>
-      <ClientFormModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <section className={styles.formLink}>
+        <button onClick={() => setIsOpen(true)}>開啟表單</button>
+        <ClientFormModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
       </section>
     </div>
 

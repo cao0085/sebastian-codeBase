@@ -97,15 +97,40 @@ export default function ClientFormModal({ isOpen, onClose }: ClientFormModalProp
   return (
     <div className={style.modalOverlay}>
       <div className={style.modal}>
-        <button className={style.modalClose} onClick={onClose}>✖</button>
-        <h2>填寫表單</h2>
-        <form onSubmit={handleSubmit}>
-          <input name="name" placeholder="姓名" value={formData.name} onChange={handleChange} required />
-          <input name="email" type="email" placeholder="信箱" value={formData.email} onChange={handleChange} required />
-          <input name="subject" placeholder="主旨" value={formData.subject} onChange={handleChange} required />
-          <textarea name="message" placeholder="訊息內容" value={formData.message} onChange={handleChange} required />
-          <input type="file" accept="audio/*" onChange={handleFileChange} />
-          <button type="submit">送出</button>
+        <form className={style.form} onSubmit={handleSubmit}>
+            <div className={style.formTitle}>
+                <div>Submit Form</div>
+            </div>
+            <div className={style.formContent}>
+                <div className={style.formRow}>
+                    <div>Name</div>
+                    <input name="name" placeholder="姓名" value={formData.name} onChange={handleChange} required />
+                </div>
+                <div className={style.formRow}>
+                    <div>E-Mail</div>
+                    <input name="email" type="email" placeholder="信箱" value={formData.email} onChange={handleChange} required />
+                </div>
+                <div className={style.formRow}>
+                    <div>Mail Title</div>
+                    <input name="subject" placeholder="主旨" value={formData.subject} onChange={handleChange} required />
+                </div>
+                <div className={style.formRow}>
+                    <div>Message</div>
+                    <textarea name="message" placeholder="訊息內容" value={formData.message} onChange={handleChange} required />
+                </div>
+                <div className={style.formRow}>
+                    <div>Your Demo</div>
+                    <input type="file" accept="audio/*" onChange={handleFileChange} />
+                </div>
+                <div className={style.formRow}>
+                    <div>Reference Link</div>
+                    <textarea name="message" placeholder="參考檔案" value={formData.message} onChange={handleChange} required />
+                </div>                    
+            </div>
+            <div className={style.formButton}>
+                <button onClick={onClose}>Cancel</button>
+                <button type="submit">Submit</button>
+            </div>
         </form>
       </div>
     </div>

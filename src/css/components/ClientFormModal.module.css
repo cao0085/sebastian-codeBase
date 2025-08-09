@@ -35,3 +35,29 @@
   background-color: var(--hover);
   border-radius: 50%;
 }
+
+.formTitle {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.content {
+  margin: 1rem 1rem;
+}
+
+.formRow {
+  display: flex;
+  font-size: 1.5rem;
+  gap: 1rem;
+}
+
+.formButton {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+  gap: 2rem;
+}
+
+.formButton button{
+    font-size: 2rem;
+}
