@@ -98,7 +98,7 @@ export default function ClientForm() {
       <input name="subject" placeholder="主旨" value={formData.subject} onChange={handleChange} required />
       <textarea name="message" placeholder="訊息內容" value={formData.message} onChange={handleChange} required />
       <input type="file" accept="audio/*" onChange={handleFileChange} />
-      <button type="submit">送出</button>
+      {/* <button type="submit">送出</button> */}
     </form>
   );
 }

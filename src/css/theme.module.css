@@ -32,11 +32,12 @@
 
 /* ---------- Dark 主題覆寫 ---------- */
 [data-theme='dark'] {
-  --bg:           #141517;
+  --bg:           #020202;
   --surface:      #1f2123;
-  --border:       #2c2e30;
+  --border:       #665d53;
 
-  --text:         #e5e7eb;
+  --text:         #d0ccb0;
+  --text-stroke: #726f60; /* 文字外框顏色 */
   --text-secondary:#9ca3af;
 
   --primary:      #a775ff;      /* 加亮避免低對比 */

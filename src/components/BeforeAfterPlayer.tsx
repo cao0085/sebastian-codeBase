@@ -3,8 +3,10 @@ import Hls from 'hls.js';
 import { useState,useEffect,useRef } from 'react';
 import { beforeAftertracks } from '@/assets/mp3/beforeAfterTracks';
 import type { BeforeAfterTrackInfo } from '@/types/BeforeAfterTrackInfo';
+import { PauseIcon } from '@/assets/svgIcon/Pause';
+import { PlayIcon } from '@/assets/svgIcon/Play';
 
-// import style from '@/css/components/PlayList.module.css';
+import style from '@/css/components/BeforeAfterPlayer.module.css';
 
 export default function BeforeAfterPlayer() {
 
@@ -17,35 +19,43 @@ export default function BeforeAfterPlayer() {
   }, []);
 
   return (
-    <div className='before-after'>
-      <h2>Take a Listen</h2>
-      <ul>
-        {trackList.map((track: BeforeAfterTrackInfo, index: number) => (
-          <li key={index}>
-            <button onClick={() => {
-              setIsReady(false); // 切換曲目時先重置 loading
-              setCurrentTrack(track);
-            }}>
-              {track.name}
-            </button>
-          </li>
-        ))}
-      </ul>
-      
-      <div style={{ position: 'relative' }}>
-        {!isReady && (
-          <div
-          >
-            <span>test...</span>
-          </div>
-        )}
+    <div className={style.container}>
+      <div className={style.title}>
+        <h2 className={style.h2}>Take a Listen</h2>
       </div>
-      <AudioController
-          key={currentTrack.name}
-          {...currentTrack}
-          onReady={() => setIsReady(true)}
-      />
 
+      <div className={style.content}>
+        <div className={style.playList}>
+            {trackList.map((track: BeforeAfterTrackInfo, index: number) => (
+              <div className={style.buttonContainer} key={index}>
+                <button onClick={() => {
+                  setIsReady(false);
+                  setCurrentTrack(track);
+                }}>
+                  {track.name}
+                </button>
+              </div>
+            ))}
+        </div>
+
+        
+        {/* <div style={{ position: 'relative' }}>
+          {!isReady && (
+            <div
+            >
+              <span>test...</span>
+            </div>
+          )}
+        </div> */}
+        <div className={style.panel}>
+          <AudioController
+              key={currentTrack.name}
+              {...currentTrack}
+              onReady={() => setIsReady(true)}
+          />
+        </div>
+
+      </div>
     </div>
   );
 }
@@ -61,8 +71,8 @@ function AudioController(trackInfo: BeforeAfterTrackInfo & { onReady?: () => voi
 
   // state
   const [activeTrack, setActiveTrack] = useState<Track>('before');
-  const toggleTrack = () => 
-    setActiveTrack(t => (t === 'before' ? 'after' : 'before'));
+  // const toggleTrack = () => 
+  //   setActiveTrack(t => (t === 'before' ? 'after' : 'before'));
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -88,6 +98,20 @@ function AudioController(trackInfo: BeforeAfterTrackInfo & { onReady?: () => voi
     waitForAll();
   }, [trackInfo.name]);
 
+  useEffect(() => {
+    const before = audioRef_before.current;
+    const after = audioRef_after.current;
+    if (!before || !after) return;
+
+    if (isPlaying) {
+      before.play().catch(() => {});
+      after.play().catch(() => {});
+    } else {
+      before.pause();
+      after.pause();
+    }
+  }, [isPlaying]);
+
   // 
   const setupAudio = (
     audio: HTMLAudioElement,
@@ -106,16 +130,16 @@ function AudioController(trackInfo: BeforeAfterTrackInfo & { onReady?: () => voi
     if (audio.canPlayType('application/vnd.apple.mpegurl')) {
       audio.src = url;
       audio.load();
-      audio.play().catch(console.error);
+      // audio.play().catch(console.error);
 
     // Hls.js fallback
     } else if (Hls.isSupported()) {
       const hls = new Hls({ enableWorker: true });
       hls.loadSource(url);
       hls.attachMedia(audio);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        audio.play().catch(console.error);
-      });
+      // hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      //   audio.play().catch(console.error);
+      // });
       return () => hls.destroy();
     } else {
       console.error('HLS not supported in this browser');
@@ -182,44 +206,70 @@ function AudioController(trackInfo: BeforeAfterTrackInfo & { onReady?: () => voi
 
   return (
     <div>
-      <button onClick={toggleTrack}>切換：{activeTrack}</button>
-      <div>
-        
 
-        {/* 播放控制 */}
-        <button onClick={() => {
-          setIsPlaying(prev => {
-            const next = !prev;
-            if (next) {
-              audioRef_before.current?.play();
-              audioRef_after.current?.play();
-            } else {
-              audioRef_before.current?.pause();
-              audioRef_after.current?.pause();
-            }
-            return next;
-          });
-        }}>
-          {isPlaying ? '暫停' : '播放'}
-        </button>
+<audio ref={audioRef_before} preload="metadata" />
+<audio ref={audioRef_after}  preload="metadata" />
+      <div className={style.controlBar}>
+        <div
+          className={style.iconCircle}
+          onClick={() => {
+            setIsPlaying(prev => {
+              const next = !prev;
 
-        {/* 進度條 */}
-        <input
-          type="range"
-          min={0}
-          max={audioRef_before.current?.duration || 0}
-          value={currentTime}
-          step={0.1}
-          onChange={(e) => {
-            const t = parseFloat(e.target.value);
-            setCurrentTime(t);
-            audioRef_before.current!.currentTime = t;
-            audioRef_after.current!.currentTime = t;
+              const beforeEl = audioRef_before.current;
+              const afterEl = audioRef_after.current;
+
+              if (next) {
+                beforeEl?.play();
+                afterEl?.play();
+              } else {
+                beforeEl?.pause();
+                afterEl?.pause();
+              }
+
+              return next;
+            });
           }}
-        />
+        >
+          {isPlaying ? <PauseIcon size={28} /> : <PlayIcon size={28} />}
+        </div>
 
-        <div>
-          <label>音量</label>
+        <div className={style.buttonGroup} role="group" aria-label="Track selector">
+          <button
+            type="button"
+            aria-pressed={activeTrack === 'before'}
+            onClick={() => setActiveTrack('before')}
+          >
+            Before
+          </button>
+          <button
+            type="button"
+            aria-pressed={activeTrack === 'after'}
+            onClick={() => setActiveTrack('after')}
+          >
+            After
+          </button>
+        </div>
+        <div className={style.volume}>
+          {/* 進度條 */}
+          <label>Time</label>
+          <input
+          
+            type="range"
+            min={0}
+            max={audioRef_before.current?.duration || 0}
+            value={currentTime}
+            step={0.1}
+            onChange={(e) => {
+              const t = parseFloat(e.target.value);
+              setCurrentTime(t);
+              audioRef_before.current!.currentTime = t;
+              audioRef_after.current!.currentTime = t;
+            }}
+          />
+        </div>
+        <div className={style.volume}>
+          <label>Volume</label>
           <input
             type="range"
             min={0}
@@ -239,8 +289,9 @@ function AudioController(trackInfo: BeforeAfterTrackInfo & { onReady?: () => voi
           />
         </div>
       </div>
-        <audio ref={audioRef_before}  />
-        <audio ref={audioRef_after}  />
+
     </div>
   );
 }
+
+

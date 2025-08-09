@@ -1,5 +1,5 @@
 :root {
-  font-family: Source Sans Pro, Merriweather, Helvetica, Arial, sans-serif;
+  font-family: Futura, Impact, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-size: clamp(14px, 0.9vw + 0.5rem, 18px);
@@ -24,6 +24,18 @@ body {
 .container {
   width: 100%;
   /* max-width: 100%; */
+}
+
+button {
+  font-family: Futura;
+  color: var(--text);
+  background-color: transparent;
+  border: none;
+  cursor: pointer; /* 讓滑鼠變成手型 */
+  transition: background-color 0.3s ease;
+}
+button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* break-point */

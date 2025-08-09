@@ -1,5 +1,4 @@
 .main {
-    /* background-color: aqua; */
 }
 
 /* ---------- Banner 外殼 ---------- */
@@ -57,4 +56,13 @@
 .heroText p {
   font-size: clamp(1rem, 2vw + 0.5rem, 1.5rem);
   max-width: 40rem;             /* 避免行長過長 */
+}
+
+
+.beforeAfterSection {
+  margin: 2rem auto 1rem auto;
+  /* width: clamp(calc(100% - 10%), 1440px, calc(100% - 30%)); */
+  max-width: 1440px;
+  height: 450px;
+  border-bottom: 1px solid var(--border);
 }
