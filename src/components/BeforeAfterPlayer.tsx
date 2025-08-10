@@ -185,17 +185,28 @@ function AudioController({ setTrackState, ...trackInfo }: AudioControllerProps) 
           cleanup();
           reject(new Error('Load timeout'));
         }, timeoutMs);
+      
+        const onCheck = () => {
+          if (audio.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+            cleanup();
+            resolve();
+          }
+        };
 
-        const onOk = () => { cleanup(); resolve(); };
+        // const onOk = () => { cleanup(); resolve(); };
         const onErr = () => { cleanup(); reject(); };
         const onAbort = () => { cleanup(); reject(new DOMException('aborted', 'AbortError')); };
         const cleanup = () => {
           clearTimeout(timeoutId);
-          audio.removeEventListener('canplaythrough', onOk);
+          // audio.removeEventListener('canplaythrough', onOk);
+          audio.removeEventListener('canplay', onCheck);
+          audio.removeEventListener('progress', onCheck);
           audio.removeEventListener('error', onErr);
           signal.removeEventListener('abort', onAbort);
         };
-        audio.addEventListener('canplaythrough', onOk, { once: true });
+        // audio.addEventListener('canplaythrough', onOk, { once: true });
+        audio.addEventListener('canplay', onCheck);
+        audio.addEventListener('progress', onCheck);
         audio.addEventListener('error', onErr, { once: true });
         signal.addEventListener('abort', onAbort, { once: true });
       });
