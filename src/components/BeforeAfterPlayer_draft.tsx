@@ -39,14 +39,14 @@ export default function BeforeAfterPlayer() {
         </div>
 
         
-        {/* <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative' }}>
           {!isReady && (
             <div
             >
               <span>test...</span>
             </div>
           )}
-        </div> */}
+        </div>
         <div className={style.panel}>
           <AudioController
               key={currentTrack.name}

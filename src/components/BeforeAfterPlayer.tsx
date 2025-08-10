@@ -7,8 +7,11 @@ import { PlayIcon } from '@/assets/svgIcon/Play';
 
 import style from '@/css/components/BeforeAfterPlayer.module.css';
 
+
+type TrackState = 'loading' | 'onReady' | 'error' ;
+
 export default function BeforeAfterPlayer() {
-  const [isReady, setIsReady] = useState(false);
+  const [trackState, setTrackState] = useState<TrackState>('loading');
   const [trackList] = useState(beforeAftertracks);
   const [currentTrack, setCurrentTrack] = useState<BeforeAfterTrackInfo>(trackList[0]);
 
@@ -28,7 +31,6 @@ export default function BeforeAfterPlayer() {
             <div className={style.buttonContainer} key={index}>
               <button
                 onClick={() => {
-                  setIsReady(false);
                   setCurrentTrack(track);
                 }}
               >
@@ -38,7 +40,7 @@ export default function BeforeAfterPlayer() {
           ))}
         </div>
 
-        <div className={style.panel} aria-busy={!isReady}>
+        {/* <div className={style.panel} aria-busy={!isReady}>
           {!isReady && (
             <div className={style.loadingOverlay}>
               <div className={style.loadingSpinner} aria-hidden />
@@ -49,9 +51,30 @@ export default function BeforeAfterPlayer() {
             key={currentTrack.name}
             {...currentTrack}
             onReady={() => {
-              // 最少顯示 1 秒 loading
-              setTimeout(() => setIsReady(true), 700);
+              setTimeout(() => setTrackState('onReady'), 700);
             }}
+          />
+        </div> */}
+
+        <div className={style.panel} aria-busy={trackState !== 'onReady'}>
+          {/* 遮罩在 loading / error 都要顯示 */}
+          {trackState !== 'onReady' && (
+            <div className={style.loadingOverlay}>
+              {trackState === 'loading' ? (
+                <>
+                  <div className={style.loadingSpinner} aria-hidden />
+                  <span className={style.loadingText}>Loading…</span>
+                </>
+              ) : (
+                <span className={style.loadingText}>Something went wrong. Please try again later.</span>
+              )}
+            </div>
+          )}
+
+          <AudioController
+            key={currentTrack.name}
+            {...currentTrack}
+            setTrackState={setTrackState}
           />
         </div>
       </div>
@@ -59,11 +82,15 @@ export default function BeforeAfterPlayer() {
   );
 }
 
+type AudioControllerProps = BeforeAfterTrackInfo & {
+  setTrackState: React.Dispatch<React.SetStateAction<TrackState>>;
+};
+
 /** 純 mp3 版本：不用 HLS / hls.js；用 Web Audio 控音 + A/B 交叉淡入淡出 */
-function AudioController(trackInfo: BeforeAfterTrackInfo & { onReady?: () => void }) {
+function AudioController({ setTrackState, ...trackInfo }: AudioControllerProps) {
   type Track = 'before' | 'after';
 
-  // <audio> refs（兩個都維持 volume=1，音量交給 WebAudio 控）
+  // Init Render to DOM <audio> refs（兩個都維持 volume=1，音量交給 WebAudio 控）
   const audioRef_before = useRef<HTMLAudioElement>(null);
   const audioRef_after = useRef<HTMLAudioElement>(null);
 
@@ -118,12 +145,8 @@ function AudioController(trackInfo: BeforeAfterTrackInfo & { onReady?: () => voi
     }
   };
 
-  /** 載入 mp3，這裡只處理本機相對路徑或你的公開 mp3 URL */
-  const setupAudio = (audio: HTMLAudioElement, path?: string) => {
-    if (!path) return;
-    const url = `${import.meta.env.BASE_URL}${path}`;
+  const setupAudioElement = (audio: HTMLAudioElement, path: string) => {
 
-    // reset
     audio.pause();
     audio.src = '';
     audio.removeAttribute('src');
@@ -131,40 +154,113 @@ function AudioController(trackInfo: BeforeAfterTrackInfo & { onReady?: () => voi
     // 純 mp3，直接指定 src；volume 固定 1，避免與 WebAudio 重複縮放
     audio.volume = 1;
     audio.preload = 'metadata';
-    audio.src = url;
+    audio.src = path;
     audio.load();
   };
 
   // 初始化/換歌：載入兩首 mp3 並在兩個音檔都能播放後 onReady
   useEffect(() => {
+
     const before = audioRef_before.current;
     const after = audioRef_after.current;
-    if (!before || !after) return;
+    if (!before || !after) 
+    { 
+      console.log("Audio Element Init failed")
+      return;
+    }
 
-    setupAudio(before, trackInfo.before_path);
-    setupAudio(after, trackInfo.after_path);
+    setTrackState('loading');
 
-    let readyCount = 0;
-    const tryReady = () => {
-      readyCount++;
-      if (readyCount >= 2) {
-        // 取 before 的長度（假設兩首等長；不同也可改成取 max）
-        const dur = isFinite(before.duration) ? before.duration : (isFinite(after.duration) ? after.duration : 0);
-        setDuration(dur || 0);
-        trackInfo.onReady?.();
-      }
+    const ac = new AbortController();
+    const { signal } = ac;
+
+    const waitCanPlayThrough = (audio: HTMLAudioElement,timeoutMs: number) => {
+      return new Promise<void>((resolve, reject) => {
+        if (audio.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+          resolve();
+          return;
+        }
+
+        const timeoutId = setTimeout(() => {
+          cleanup();
+          reject(new Error('Load timeout'));
+        }, timeoutMs);
+
+        const onOk = () => { cleanup(); resolve(); };
+        const onErr = () => { cleanup(); reject(); };
+        const onAbort = () => { cleanup(); reject(new DOMException('aborted', 'AbortError')); };
+        const cleanup = () => {
+          clearTimeout(timeoutId);
+          audio.removeEventListener('canplaythrough', onOk);
+          audio.removeEventListener('error', onErr);
+          signal.removeEventListener('abort', onAbort);
+        };
+        audio.addEventListener('canplaythrough', onOk, { once: true });
+        audio.addEventListener('error', onErr, { once: true });
+        signal.addEventListener('abort', onAbort, { once: true });
+      });
     };
 
-    const onCanplayBefore = () => { before.removeEventListener('canplaythrough', onCanplayBefore); tryReady(); };
-    const onCanplayAfter = () => { after.removeEventListener('canplaythrough', onCanplayAfter); tryReady(); };
+    (async () => {
+      var timeoutMs = 3000;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        if (signal.aborted) return;
 
-    before.addEventListener('canplaythrough', onCanplayBefore);
-    after.addEventListener('canplaythrough', onCanplayAfter);
+        timeoutMs += 2000;
 
-    // 清理
+        // 每次重試都重設音訊元素
+        setupAudioElement(before, `${import.meta.env.BASE_URL}${trackInfo.before_path}`);
+        setupAudioElement(after,  `${import.meta.env.BASE_URL}${trackInfo.after_path}`);
+
+        try {
+          await Promise.all([
+            waitCanPlayThrough(before,timeoutMs),
+            waitCanPlayThrough(after,timeoutMs),
+          ]);
+
+          // 成功 → 設定 duration & onReady
+          const dur = Math.max(
+            Number.isFinite(before.duration) ? before.duration : 0,
+            Number.isFinite(after.duration)  ? after.duration  : 0
+          );
+          setDuration(dur);
+          setTimeout(() => setTrackState('onReady'), 700);
+          break; // 跳出迴圈，不再重試
+
+        } catch (err: any) {
+          if (err.name === 'AbortError'){
+            console.log("AbortError")
+            return
+          }; // 中止就直接結束
+          console.warn(`Audio load attempt ${attempt} failed`, err);
+          if (attempt === 3){
+            console.error('All retries failed');
+            setTrackState('error');
+          }
+        }
+      }
+    })();
+
+    // setupAudioElement(before, `${import.meta.env.BASE_URL}${trackInfo.before_path}`);
+    // setupAudioElement(after, `${import.meta.env.BASE_URL}${trackInfo.after_path}`);
+
+    // Promise.all([waitCanPlayThrough(before), waitCanPlayThrough(after)])
+    // .then(() => {
+    //   const dur = Math.max(
+    //     Number.isFinite(before.duration) ? before.duration : 0,
+    //     Number.isFinite(after.duration)  ? after.duration  : 0
+    //   );
+    //   setDuration(dur);
+    //   trackInfo.onReady?.();
+    // })
+    // .catch(err => {
+    //   if (err.name !== 'AbortError') console.error(err);
+    // });
+
     return () => {
-      before.removeEventListener('canplaythrough', onCanplayBefore);
-      after.removeEventListener('canplaythrough', onCanplayAfter);
+
+      ac.abort();
+
       // 斷開 WebAudio（避免多次掛載累積 graph）
       try { srcBeforeRef.current?.disconnect(); } catch {}
       try { srcAfterRef.current?.disconnect(); } catch {}
