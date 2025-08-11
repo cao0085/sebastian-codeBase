@@ -92,7 +92,7 @@ export default function MainLayout() {
       </div>
       
       {/* ② 永遠貼底的 Toggle 按鈕 */}
-      <div className={layoutStyles.bottomToggleRow}>
+      {/* <div className={layoutStyles.bottomToggleRow}>
         <button
           className={layoutStyles.bottomToggleBtn}
           onClick={() => setOpenBottom(!openBottom)}
@@ -100,7 +100,7 @@ export default function MainLayout() {
         >
           {openBottom ? '⌄' : '⌃'}
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

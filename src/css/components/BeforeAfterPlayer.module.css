@@ -23,15 +23,22 @@
 }
 
 .playList {
-  /* background-color: aquamarine; */
   flex: 0 0 350px;
   height: 90%;
-  width: 35%;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #ededed transparent;
 }
-
+@media (max-width: 500px) {
+  /* 這裡放小螢幕的 CSS */
+  .content {
+    display: block;
+  }
+  .playList {
+    flex: 0 0 95%;
+    height: 70%;
+  }
+}
 /* mobile */
 
 
@@ -63,8 +70,8 @@
 }
 
 .iconCircle {
-  width: 48px;
-  height: 48px;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   border: 1px solid currentColor;
   display: flex;
@@ -76,7 +83,7 @@
 .buttonGroup {
   display: inline-flex;
   border-radius: 20px;
-  overflow: hidden;            /* 做成一體成型的膠囊 */
+  overflow: hidden;
   border: 1px solid var(--border);
 }
 
@@ -104,13 +111,18 @@
   outline-offset: 2px;
 }
 
-/* vol input */
-.volume input[type="range"] {
-  accent-color: #26211c; /* 最簡單，直接改主色（支援新瀏覽器） */
+
+
+.volume {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .volume input[type="range"] {
-  accent-color: #26211c; /* 最簡單，直接改主色（支援新瀏覽器） */
+  width: 100%;
+  max-width: 70%; /* 避免溢出 */
+  accent-color: #26211c; /* 你原本的主色 */
 }
 
 .panel {

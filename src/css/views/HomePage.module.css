@@ -66,10 +66,9 @@
 
 .beforeAfterSection {
   margin: 10px clamp(3vw, calc(13.5686vw - 49.02px), 13vw);
-  /* margin:  13%; */
   height: 450px;
   border-bottom: 1px solid var(--border);
-  background-color: tomato;
+  /* background-color: tomato; */
 }
 
 .formLink button{

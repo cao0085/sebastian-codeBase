@@ -40,22 +40,6 @@ export default function BeforeAfterPlayer() {
           ))}
         </div>
 
-        {/* <div className={style.panel} aria-busy={!isReady}>
-          {!isReady && (
-            <div className={style.loadingOverlay}>
-              <div className={style.loadingSpinner} aria-hidden />
-              <span className={style.loadingText}>Loading…</span>
-            </div>
-          )}
-          <AudioController
-            key={currentTrack.name}
-            {...currentTrack}
-            onReady={() => {
-              setTimeout(() => setTrackState('onReady'), 700);
-            }}
-          />
-        </div> */}
-
         <div className={style.panel} aria-busy={trackState !== 'onReady'}>
           {trackState !== 'onReady' && (
             <div className={style.loadingOverlay}>
