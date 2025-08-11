@@ -58,13 +58,18 @@
   max-width: 40rem;             /* 避免行長過長 */
 }
 
+.testBlock {
+  background-color: bisque;
+  margin: 10px 3%;
+  height: 600px;
+}
 
 .beforeAfterSection {
-  margin: 2rem auto 1rem auto;
-  /* width: clamp(calc(100% - 10%), 1440px, calc(100% - 30%)); */
-  max-width: 1440px;
+  margin: 10px clamp(3vw, calc(13.5686vw - 49.02px), 13vw);
+  /* margin:  13%; */
   height: 450px;
   border-bottom: 1px solid var(--border);
+  background-color: tomato;
 }
 
 .formLink button{

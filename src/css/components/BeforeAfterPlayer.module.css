@@ -16,17 +16,17 @@
 }
 
 .content {
-    min-height: 0; 
-    height: auto;
-    flex: 1;
     display: flex;
+    min-height: 0; 
     padding: 0 20px;
     gap:5rem
 }
 
 .playList {
+  /* background-color: aquamarine; */
+  flex: 0 0 350px;
   height: 90%;
-  width: 350px;
+  width: 35%;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #ededed transparent;
@@ -51,8 +51,8 @@
 
 /* audioPlayer component */
 .panel {
-    border: 1px solid var(--border);
-    width: 100%;
+  flex: 1;
+  border: 1px solid var(--border);
 }
 
 .controlBar {

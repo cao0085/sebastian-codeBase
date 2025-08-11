@@ -12,21 +12,24 @@ export default function HomePage() {
     <div className={styles.main}>
 
       <section className={styles.hero}>
-        <img src={`${import.meta.env.BASE_URL}room.jpg`}  alt="Microphone" className={styles.heroImg} />
+        {/* <img src={`${import.meta.env.BASE_URL}room.jpg`}  alt="Microphone" className={styles.heroImg} />
         <div className={styles.heroText}>
           <h1>Record Your Voice</h1>
           <p>Capture every nuance in studio-quality sound.</p>
-        </div>
+        </div> */}
       </section>
       <section>
-        <DraggableWindow/>
+        {/* <DraggableWindow/> */}
+      </section>
+      <section className={styles.testBlock}>
+        test
       </section>
       <section className={styles.beforeAfterSection}>
         <BeforeAfterPlayer/>
       </section>
       <section className={styles.formLink}>
-        <button onClick={() => setIsOpen(true)}>開啟表單</button>
-        <ClientFormModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        {/* <button onClick={() => setIsOpen(true)}>開啟表單</button>
+        <ClientFormModal isOpen={isOpen} onClose={() => setIsOpen(false)} /> */}
       </section>
     </div>
 

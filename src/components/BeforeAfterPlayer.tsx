@@ -57,7 +57,6 @@ export default function BeforeAfterPlayer() {
         </div> */}
 
         <div className={style.panel} aria-busy={trackState !== 'onReady'}>
-          {/* 遮罩在 loading / error 都要顯示 */}
           {trackState !== 'onReady' && (
             <div className={style.loadingOverlay}>
               {trackState === 'loading' ? (
